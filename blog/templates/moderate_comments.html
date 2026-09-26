@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}
+Moderate Comments
+{% endblock %}
+
+{% block content %}
+
+<h2>Comment Moderation</h2>
+
+
+{% for comment in comments %}
+
+<div class="card mb-3">
+
+<div class="card-body">
+
+<h5>
+{{ comment.user.username }}
+</h5>
+
+<p>
+{{ comment.content }}
+</p>
+
+{% if comment.approved %}
+
+<span class="badge bg-success">
+Approved
+</span>
+
+{% else %}
+
+<span class="badge bg-warning">
+Pending
+</span>
+
+<form
+method="POST"
+action="{{ url_for(
+    'main.approve_comment',
+    comment_id=comment.id
+) }}"
+class="d-inline">
+
+<button class="btn btn-success btn-sm">
+Approve
+</button>
+
+</form>
+
+{% endif %}
+
+
+<form
+method="POST"
+action="{{ url_for(
+    'main.delete_comment',
+    comment_id=comment.id
+) }}"
+class="d-inline">
+
+<button class="btn btn-danger btn-sm">
+Delete
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% else %}
+
+<p>
+No comments.
+</p>
+
+{% endfor %}
+
+{% endblock %}
